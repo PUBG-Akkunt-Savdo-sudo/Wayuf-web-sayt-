@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0518">
+<title>IMBA WAIFU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ❄️ WINTER SNOW OVERLAY -->
+<canvas id="snowCanvas" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9999;opacity:.7"></canvas>
+
+<div class="app">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="who">
+      <div class="avatar" id="avatarInitial">Z</div>
+      <div class="who-text">
+        <b>IMBA WAIFU</b>
+        <small>ANIME CARD COLLECTION</small>
+      </div>
+    </div>
+    <div class="balances">
+      <button class="pill diamond" id="btnAddDiamond"><span>💎</span><b id="balDiamond">0</b><i>+</i></button>
+      <div class="pill coin"><span>🪙</span><b id="balBall">0</b></div>
+      <button class="pill bell" id="btnBell">🔔<span class="dot" id="notifDot">3</span></button>
+    </div>
+  </header>
+
+  <!-- LEVEL BAR -->
+  <button class="levelbar" id="btnLevel">
+    <div class="lvicon">✦</div>
+    <div class="lvmid">
+      <div class="lvtop"><b id="lvNum">Lv. 1</b><small id="lvRank">Newbie</small></div>
+      <div class="xpbar"><div class="xpfill" id="xpFill"></div></div>
+      <small class="xptext" id="xpText">0 / 1000 XP</small>
+    </div>
+    <div class="lvchev">›</div>
+  </button>
+
+  <!-- QUICK ROW -->
+  <nav class="quickrow">
+    <button class="qbtn" data-action="daily"><span class="qicon gift">🎁<i class="dot" id="dailyDot"></i></span>Kunlik bonus</button>
+    <button class="qbtn" data-action="keys"><span class="qicon key">🔑<i class="badge" id="keyBadge">0</i></span>Kalitlar</button>
+    <button class="qbtn" data-view="market"><span class="qicon">🏪</span>Market</button>
+    <button class="qbtn" data-view="games"><span class="qicon">🎮</span>O'yinlar</button>
+    <button class="qbtn" data-view="chat"><span class="qicon">💬<i class="badge" id="chatBadge">2</i></span>Chat</button>
+    <button class="qbtn" data-view="profile"><span class="qicon">👤</span>Profil</button>
+  </nav>
+
+  <main class="views">
+
+    <!-- HOME -->
+    <section class="view" data-view="home">
+
+      <div class="hero">
+        <small>COLLECT · UPGRADE · TRADE</small>
+        <h1>IMBA <span>WAIFU</span></h1>
+        <p>Eng noyob anime kartalarni yig'ing, kuchaytiring va savdo qiling</p>
+        <button class="cta" data-view="cards">Kartalarni ko'rish →</button>
+      </div>
+
+      <!-- ❄️ QISH MAVSUMI BANNERI -->
+      <div class="winter-banner" id="winterBanner">
+        <div class="wb-snow">❄️ ❄️ ❄️ ❄️ ❄️</div>
+        <div class="wb-body">
+          <span class="wb-icon">🎄</span>
+          <div>
+            <b>Qish mavsumi boshlandi!</b>
+            <small>Maxsus qish kartalarini to'plang · Chegirmali narxlar</small>
+          </div>
+          <span class="wb-badge">YaNGI</span>
+        </div>
+      </div>
+
+      <div id="featuredBanner" hidden class="featuredbanner">
+        <span class="ftag">⏳ CHEKLANGAN VAQTLI</span>
+        <div class="fbody">
+          <div class="fart" id="fArt"></div>
+          <div><b id="fName"></b><small id="fCountdown"></small></div>
+        </div>
+      </div>
+
+      <div class="quickcards">
+        <button class="qcard chest" data-action="openChestQuick">
+          <span>🧰</span><div><b>Sandiqni ochish</b><small>Noyob kartalar oling</small></div>
+        </button>
+        <button class="qcard" data-view="market">
+          <span>⚖️</span><div><b>Market</b><small>Sotib olish / sotish</small></div>
+        </button>
+        <button class="qcard" data-action="claimMission">
+          <span>📋</span><div><b>Kunlik vazifa</b><small>+5000 tanga</small></div>
+        </button>
+      </div>
+
+      <div class="sectionhead"><h2>🔥 Top Waifu kartalar</h2><button class="link" data-view="cards">Barchasi →</button></div>
+      <div class="cardgrid" id="topCards"></div>
+
+      <div class="threecol">
+        <div class="panel">
+          <div class="panelhead"><span>🎯</span><b>Kunlik vazifa</b></div>
+          <div class="progressline"><div class="progressfill" id="missionFill"></div></div>
+          <small id="missionCount">0/5</small>
+          <ul class="missionlist" id="missionList"></ul>
+        </div>
+        <div class="panel">
+          <div class="panelhead"><span>🔥</span><b>So'nggi savdo</b></div>
+          <div class="salecard" id="latestSale"></div>
+        </div>
+        <div class="panel">
+          <div class="panelhead"><span>🏆</span><b>Reyting</b></div>
+          <ol class="ranklist" id="rankList"></ol>
+        </div>
+      </div>
+
+      <button class="dailychest" id="dailyChestBanner">
+        <div><b>Kunlik sandiq</b><small>Hozir oching va tasodifiy noyob karta oling!</small></div>
+        <span class="chestbtn">Ochish (<span id="chestKeyCost">🔑1</span>)</span>
+      </button>
+
+    </section>
+
+    <!-- CARDS -->
+    <section class="view" data-view="cards">
+      <div class="viewhead"><h2>Kartalar kolleksiyasi</h2></div>
+      <div class="tabs" id="cardTabs">
+        <button class="tab active" data-filter="all">Barchasi</button>
+        <button class="tab" data-filter="Oddiy">Oddiy</button>
+        <button class="tab" data-filter="Noyob">Noyob</button>
+        <button class="tab" data-filter="Maxsus">Maxsus</button>
+      </div>
+      <div class="cardgrid wide" id="allCards"></div>
+    </section>
+
+    <!-- MARKET -->
+    <section class="view" data-view="market">
+      <div class="viewhead"><h2>Market</h2></div>
+      <div class="tabs" id="marketTabs">
+        <button class="tab active" data-mtab="buy">Sotib olish</button>
+        <button class="tab" data-mtab="sell">Mening sotuvlarim</button>
+      </div>
+      <div class="statrow" id="marketStats"></div>
+      <div class="listrows" id="marketList"></div>
+    </section>
+
+    <!-- GAMES -->
+    <section class="view" data-view="games">
+      <div class="viewhead"><h2>O'yinlar</h2></div>
+      <div class="tabs" id="gameTabs">
+        <button class="tab active" data-gtab="all">Barcha o'yinlar</button>
+        <button class="tab" data-gtab="stats">Mening statistikam</button>
+      </div>
+      <div class="gamegrid" id="gameGrid"></div>
+      <p class="freezenote" id="freezeNote" hidden>⏳ 10 ta o'yindan so'ng 6 soat tanaffus qo'yiladi.</p>
+    </section>
+
+    <!-- CHAT -->
+    <section class="view" data-view="chat">
+      <div class="viewhead"><h2>Chat</h2></div>
+      <div class="tabs" id="chatRoomTabs">
+        <button class="tab active" data-room="global">🌐 Global</button>
+        <button class="tab" data-room="friends">👥 Do'stlar</button>
+      </div>
+      <div class="chatbox" id="chatBox"></div>
+      <form class="chatinput" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Xabar yozing..." autocomplete="off" maxlength="500">
+        <button type="submit">➤</button>
+      </form>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="view" data-view="profile">
+      <div class="profilecard">
+        <label class="avatar big" id="profileAvatar" for="avatarFile" style="cursor:pointer">Z</label>
+        <input type="file" id="avatarFile" accept="image/*" hidden>
+        <div>
+          <b id="profileName">Zohirshoh</b>
+          <small id="profileId">ID: 48271</small>
+        </div>
+        <span class="vip" id="profileVip">👑 VIP</span>
+      </div>
+      <div class="panel" style="margin-bottom:16px">
+        <div class="panelhead"><span>✏️</span><b>Ismni o'zgartirish</b></div>
+        <input type="text" id="nameInput" class="textfield" maxlength="32" placeholder="Yangi ism">
+        <button class="cta" id="btnSaveName" style="width:100%">Saqlash</button>
+      </div>
+      <div class="statgrid">
+        <div class="statbox"><span>💎</span><b id="statDiamond">0</b><small>Ball</small></div>
+        <div class="statbox"><span>🔑</span><b id="statKeys">0</b><small>Kalitlar</small></div>
+        <div class="statbox"><span>⭐</span><b id="statLevel">Lv.1</b><small>Pro Gamer</small></div>
+      </div>
+      <div class="menulist">
+        <button class="menuitem">📊 Statistika<span>›</span></button>
+        <button class="menuitem" data-view="cards">🗂 Kolleksiya<span>›</span></button>
+        <button class="menuitem" id="btnSettings">⚙️ Sozlamalar<span>›</span></button>
+        <button class="menuitem">🆘 Yordam<span>›</span></button>
+      </div>
+      <div class="panel" id="settingsPanel" hidden style="margin-bottom:16px">
+        <div class="panelhead"><span>⚙️</span><b>Sozlamalar</b></div>
+        <label class="settingrow">
+          <span>Bildirishnomalar</span>
+          <input type="checkbox" id="toggleNotifications" checked>
+        </label>
+        <label class="settingrow">
+          <span>Tugma tovushi (haptic)</span>
+          <input type="checkbox" id="toggleHaptic" checked>
+        </label>
+        <small class="hint">Til: O'zbekcha (hozircha yagona til)</small>
+      </div>
+      <button class="logoutbtn">Chiqish</button>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottomnav">
+    <button class="navbtn active" data-view="home"><span>🏠</span>Bosh sahifa</button>
+    <button class="navbtn" data-view="cards"><span>🗂</span>Kartalar</button>
+    <button class="navbtn" data-view="market"><span>🏪</span>Market</button>
+    <button class="navbtn" data-view="games"><span>🎮</span>O'yinlar</button>
+    <button class="navbtn" data-view="profile"><span>👤</span>Profil</button>
+  </nav>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- CARD EVENT OVERLAY: shared by bought/sold/returned/gifted/added-to-collection animations -->
+  <div class="cardevent-overlay" id="cardEventOverlay" hidden>
+    <div class="cardevent-confetti" id="cardEventConfetti"></div>
+    <div class="cardevent-sheet">
+      <div class="cardevent-icon"><span></span></div>
+      <h2 class="cardevent-title"></h2>
+      <p class="cardevent-sub"></p>
+      <div class="cardevent-card">
+        <span class="cardevent-rarity"></span>
+        <div class="cardevent-art"></div>
+        <b class="cardevent-name"></b>
+        <small class="cardevent-id"></small>
+      </div>
+      <div class="cardevent-fields"></div>
+      <button class="cardevent-btn"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ GAME MODAL ============ -->
+<div id="gameModal" class="gmodal" hidden>
+  <div class="gmodal-backdrop" id="gmodalBackdrop"></div>
+  <div class="gmodal-sheet">
+    <div class="gmodal-header" id="gmodal-title">O'yin</div>
+    <div class="gmodal-body" id="gmodal-body"></div>
+    <div class="gmodal-result" id="gmodal-result" hidden></div>
+    <button class="cta gmodal-closebtn" id="gmodal-close" hidden>✓ Davom etish</button>
+  </div>
+</div>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+  // VPS (Serverspace, Tashkent) — sslip.io orqali bepul HTTPS domen
+  window.IMBA_API_BASE = "https://81-85-51-5.sslip.io/api";
+</script>
+<script src="app.js"></script>
+</body>
+</html>
